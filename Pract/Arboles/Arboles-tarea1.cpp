@@ -1,4 +1,4 @@
-#include <iostream>
+#include <iostream>    // Jhon Mario Aguirre Correa
 using namespace std;
 
 
@@ -75,6 +75,47 @@ void inorden(struct nodo *raiz) {
 
 //////////////////////////////////////////////////////////////////////////////////////
 
+#include <iomanip>
+
+void dibujarA(struct nodo *raiz) {
+    if (raiz == NULL) {
+        cout<<"El arbol esta vacio."<< endl;
+        return;
+    }
+
+    // Función auxiliar para calcular la altura del árbol
+    auto altura = [](nodo* n, auto&& altura) -> int {
+        if (n == NULL) return 0;
+        return 1 + max(altura(n->izq, altura), altura(n->der, altura));
+    };
+
+    // Función recursiva para imprimir el árbol
+    auto imprimirNivel = [](nodo* nodo, int nivel, int espaciado, auto&& imprimirNivel) {
+        if (nodo == NULL) {
+            cout<<setw(espaciado)<<" ";
+            return;
+        }
+        if (nivel == 1) {
+            cout << setw(espaciado) << nodo->inf;
+        } else if (nivel > 1) {
+            imprimirNivel(nodo->izq, nivel - 1, espaciado, imprimirNivel);
+            cout<<setw(espaciado) << " ";
+            imprimirNivel(nodo->der, nivel - 1, espaciado, imprimirNivel);
+        }
+    };
+
+    int h = altura(raiz, altura);
+    int espaciado = 4; // Ajusta este valor para cambiar el espaciado entre nodos
+
+    for (int i = 1; i <= h; i++) {
+        imprimirNivel(raiz, i, espaciado * (h - i + 1), imprimirNivel);
+        cout<<endl<<endl;
+    }
+}
+
+
+//////////////////////////////////////////////////////////////////////////////////////
+
 
 
 int main(){
@@ -93,7 +134,7 @@ int main(){
 
      case 2: cout<<"\n(2) Añadir nodo.\n"; inorden(raiz); break;
 
-     case 3: cout<<"\n(3) Añadir nodo.\n"; break;
+     case 3: cout<<"\n(3) Dibujar árbol.\n"; dibujarA(raiz); break;
  
      case 4: cout<<"\nHasta luego.\n"; break;
 
